@@ -1,0 +1,224 @@
+<html>
+
+<head>
+    <title>畫一個圓 draw a circle</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500&family=Noto+Serif+TC:wght@400;500;600;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <style type="text/css" media="screen">
+        .page-3 {
+            background: black;
+        }
+        a.video-scope p {
+            display: none;
+            width: 200px;
+        }
+        a.video-scope:hover > p {
+            display: block;
+        }
+
+        .circle-mention {
+            text-align: center;
+            color: white;
+        }
+
+        #mention-first {
+            margin-bottom: 0;
+        }
+
+        #mention-second {
+            margin-top: 0;
+        }
+
+        @media screen and (max-width:768px) {
+            #mention-first {
+                margin-top: -20px;
+                right: 0;
+                float: right;
+            }
+
+            #mention-second {
+                right: 0;
+                float: right;
+            }
+        }
+    </style>
+</head>
+<body class="page-3 data-12">
+    <div id="icon-light"></div>
+    <div class="nav-line light desktop-only"></div>
+    <a class="page-nav light nav-prev" href="./self_portrait.html">
+        <img src="backward.svg" alt="backward" />
+        PREVIOUS PROJECT
+    </a>
+    <a class="page-nav light nav-next" href="./discreet_works_thanks_to_bruegel.html">
+        <img src="forward.svg" alt="forward" />
+        NEXT PROJECT
+    </a>
+    <div class="bio-info light"></div>
+
+    <canvas id="circle"></canvas>
+    <p id="mention-first" class="circle-mention">請沿著圓圈滑行</p>
+    <p id="mention-second" class="circle-mention">Please slide along the circle!</p>
+    <script type="text/javascript">
+        // 斜率
+        var tangent = function(x, radius) {
+            radius = Math.abs(radius);
+            x = Math.abs(x);
+            return Math.sqrt(Math.pow(radius, 2) - Math.pow(x, 2));
+        }
+
+        // 建立 video link
+        var createVideoLink = function(url, x, y, title, marginLeft = 0, marginTop = 0) {
+            var blockSize = 25
+            var a = document.createElement('a');
+            a.setAttribute('data-fancybox', '');
+            a.setAttribute('data-options', '{"caption" : "'+ title +'"}');
+            a.setAttribute('href', url);
+            a.className = "video-scope";
+            a.style.textDecoration = 'none';
+            a.style.color = 'white';
+            a.style.position = 'absolute';
+            a.style.disply = 'inline-block';
+            a.style.left = x - blockSize / 2;
+            a.style.top = y - blockSize / 2;
+            a.style.width = blockSize;
+            a.style.height = blockSize;
+            a.style.zIndex = 10;
+            a.style.cursor = "url('lightspot-large.svg'), auto";
+            // a.style.border = "1px solid";
+
+            var p = document.createElement('p');
+            p.innerHTML = title;
+            p.style.marginLeft = marginLeft;
+            p.style.marginTop = marginTop;
+            p.style.lineHeight = blockSize + 'px';
+            a.appendChild(p);
+            document.body.appendChild(a);
+        }
+
+        let canvas = document.getElementById("circle");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight * 2 / 3;
+        // canvas.height = 750;
+        let ctx = canvas.getContext("2d");
+        // let min = Math.min(canvas.width, canvas.height);
+        let min = Math.min(canvas.width, canvas.height);
+        let circle_x = canvas.width / 2;
+        let circle_y = min / 2 + 50;
+        let circle_radius = min / 2 * 0.8;
+
+        // 小圈圈
+        ctx.globalAlpha = 0;
+        let small_circle_path = new Path2D();
+        small_circle_path.arc(circle_x, circle_y, circle_radius - 10, 50, 0, Math.PI*2, true);
+        ctx.stroke(small_circle_path);
+
+        // 大圈圈
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#FFFFFF";
+        ctx.globalAlpha = 1;
+        let big_circle_path = new Path2D();
+        big_circle_path.arc(circle_x, circle_y, circle_radius, 50, 0, Math.PI*2, true);
+        ctx.stroke(big_circle_path);
+        ctx.font = "16px Arial";
+
+        // 雪人
+        let x = circle_radius * 0.7;
+        let y = tangent(x, circle_radius);
+        x = circle_x - x;
+        y = circle_y - y;
+        createVideoLink('熱帶計畫雪人.mp4', x, y, '熱帶計畫：雪人', 35); // 建立 hyper link
+
+        // 林中路
+        x = circle_radius * 0.85;
+        y = tangent(x, circle_radius);
+        x = circle_x + x;
+        y = circle_y - y;
+        createVideoLink('林中路.mp4', x, y, '林中路', -50); // 建立 hyper link
+
+        // 訪客
+        x = circle_radius * 0.97;
+        y = tangent(x, circle_radius);
+        x = circle_x - x;
+        y = circle_y + y;
+        createVideoLink('訪客.mp4', x, y, '訪客', 30); // 建立 hyper link
+
+        // 日光下的靜物
+        x = circle_radius * 0.85;
+        y = tangent(x, circle_radius);
+        x = circle_x - x;
+        y = circle_y + y;
+        createVideoLink('日光下的靜物.mp4', x, y, '日光下的靜物', 30);
+
+        // 旅行者
+        x = circle_radius * 0.82;
+        y = tangent(x, circle_radius);
+        x = circle_x + x;
+        y = circle_y + y;
+        createVideoLink('旅行者.mp4', x, y, '旅行者', -50);
+
+        // 流浪者之鐘
+        x = circle_radius * 0.55;
+        y = tangent(x, circle_radius);
+        x = circle_x + x;
+        y = circle_y + y;
+        createVideoLink('流浪者之鐘.mp4', x, y, '流浪者之鐘', -70);
+
+        // 時間之書
+        x = circle_radius * 0.3;
+        y = tangent(x, circle_radius);
+        x = circle_x + x;
+        y = circle_y + y;
+        createVideoLink('時間之書.mp4', x, y, '時間之書', -70);
+
+        function reOffset(){
+            var bb = canvas.getBoundingClientRect();
+            offsetX = bb.left;
+            offsetY = bb.top;        
+        }
+
+        // 定義 offset 目的調整相對位置
+        var offsetX, offsetY;
+        reOffset();
+        window.onscroll = function(e){
+            reOffset();
+        }
+        window.onresize = function(e){
+            reOffset();
+        }
+
+        var currentCursor = 0;
+        $("#circle").mousemove(function(e){
+            e.preventDefault();
+            e.stopPropagation();
+
+            mouseX = parseInt(e.clientX - offsetX);
+            mouseY = parseInt(e.clientY - offsetY);
+
+            var newCursor = 0;
+            if(ctx.isPointInPath(big_circle_path, mouseX, mouseY) 
+                && !ctx.isPointInPath(small_circle_path, mouseX, mouseY)
+            ){
+                newCursor = 1;
+            }
+
+            if(!newCursor && !currentCursor){
+                currentCursor = 0;
+                canvas.style.cursor = 'default';
+            } else {
+                currentCursor = newCursor;
+                canvas.style.cursor = "url('lightspot-small.svg'), auto";
+            }
+        });
+    </script>
+</body>
+
+</html>
