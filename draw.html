@@ -64,7 +64,7 @@
     </a>
     <div class="bio-info light"></div>
 
-    <canvas id="circle"></canvas>
+    <canvas id="circle"></canvas><br>
     <p id="mention-first" class="circle-mention">請沿著圓圈滑行</p>
     <p id="mention-second" class="circle-mention">Please slide along the circle!</p>
     <script type="text/javascript">
@@ -106,7 +106,7 @@
 
         let canvas = document.getElementById("circle");
         canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight * 2 / 3;
+        canvas.height = window.innerHeight * 3 / 4;
         // canvas.height = 750;
         let ctx = canvas.getContext("2d");
         // let min = Math.min(canvas.width, canvas.height);
@@ -118,16 +118,22 @@
         // 小圈圈
         ctx.globalAlpha = 0;
         let small_circle_path = new Path2D();
-        small_circle_path.arc(circle_x, circle_y, circle_radius - 10, 50, 0, Math.PI*2, true);
+        small_circle_path.arc(circle_x, circle_y, circle_radius - 20, 50, 0, Math.PI*2, true);
         ctx.stroke(small_circle_path);
 
         // 大圈圈
+        ctx.globalAlpha = 0;
+        let big_circle_path = new Path2D();
+        big_circle_path.arc(circle_x, circle_y, circle_radius + 20, 50, 0, Math.PI*2, true);
+        ctx.stroke(big_circle_path);
+
+        // 目標圈圈
         ctx.lineWidth = 3;
         ctx.strokeStyle = "#FFFFFF";
         ctx.globalAlpha = 1;
-        let big_circle_path = new Path2D();
-        big_circle_path.arc(circle_x, circle_y, circle_radius, 50, 0, Math.PI*2, true);
-        ctx.stroke(big_circle_path);
+        let target_circle_path = new Path2D();
+        target_circle_path.arc(circle_x, circle_y, circle_radius, 50, 0, Math.PI*2, true);
+        ctx.stroke(target_circle_path);
         ctx.font = "16px Arial";
 
         // 雪人
